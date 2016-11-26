@@ -8,7 +8,7 @@
     "test": "NODE_ENV=test babel-node node_modules/.bin/isparta cover _mocha -- --ui bdd --reporter spec --colors --compilers js:babel-core/register ./src/server/tests/*.test.js",
     "test:watch": "npm run test -- --watch"
   },
-  "author": "Gonzalo Pincheira Arancibia <g.pincheira.a@gmail.com> (https://github.com/gpincheiraa)",
+  "author": "dev-wise <g.pincheira.a@gmail.com> (https://github.com/gpincheiraa)",
   "license": "ISC",
   "dependencies": {
     "bluebird": "3.4.6",
@@ -29,7 +29,8 @@
     "morgan": "1.7.0",
     "oauth": "^0.9.14",
     "socket.io": "^1.4.6",
-    "socket.io-client": "^1.4.6"
+    "socket.io-client": "^1.4.6",
+    "twitter": "^1.4.0"
   },
   "devDependencies": {
     "babel-cli": "6.16.0",
