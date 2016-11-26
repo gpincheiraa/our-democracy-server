@@ -1,35 +1,36 @@
 import httpStatus from 'http-status';
 import APIError from '../helpers/APIError';
+import oauth from 'oauth';
 
 const config = require('../../config/env');
+const consumer = new oauth.OAuth(
+    "https://twitter.com/oauth/request_token",
+    "https://twitter.com/oauth/access_token",
+    config.auth.twitter.CONSUMER_KEY,
+    config.auth.twitter.CONSUMER_SECRET,
+    "1.0A",
+    `http://127.0.0.1:${config.port}/api/auth/callback`,
+    "HMAC-SHA1"
+);
 
-// sample user, used for authentication
-const user = {
-  username: 'test'
+let getToken = (req, res, next) => {
+  consumer.getOAuthRequestToken( (error, oauthToken, oauthTokenSecret, results) => {
+    if(error) {
+      const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED);
+      return next(err);
+    } else {
+      console.log(results);
+      req.session.oauthRequestToken = oauthToken;
+      req.session.oauthRequestTokenSecret = oauthTokenSecret;
+      return res.json({
+        session: req.session,
+        status: {
+          'message': 'OK',
+          'code' : httpStatus.OK
+        }
+      });
+    }
+  });
 };
 
-/**
- * Returns authentication token
- * @param req
- * @param res
- * @param next
- * @returns {*}
- */
-function login(req, res, next) {
-  // Ideally you'll fetch this from the db
-  // Idea here was to show how jwt works with simplicity
-  if (req.body.username === user.username) {
-    return res.json({
-      username: user.username,
-      status: {
-        'message': 'OK',
-        'code' : httpStatus.OK
-      }
-    });
-  }
-
-  const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED);
-  return next(err);
-}
-
-export default { login };
+export default { getToken };
