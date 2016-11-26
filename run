@@ -1,0 +1,3 @@
+echo "Ingrese un nombre para el contenedor:"
+read containername
+docker run  -it --privileged -p 3000:3000 -p 28015:28015 -p 8080:8080 --name $containername -v $(pwd):/home/dev/app babel-gulp:node6
