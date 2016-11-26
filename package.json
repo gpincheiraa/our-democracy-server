@@ -11,9 +11,6 @@
   "author": "Gonzalo Pincheira Arancibia <g.pincheira.a@gmail.com> (https://github.com/gpincheiraa)",
   "license": "ISC",
   "dependencies": {
-    "passport-twitter": "^1.0.4",
-    "socket.io": "^1.4.6",
-    "socket.io-client": "^1.4.6",
     "bluebird": "3.4.6",
     "body-parser": "1.15.2",
     "compression": "1.6.2",
@@ -28,7 +25,11 @@
     "http-status": "^0.2.0",
     "joi": "9.1.1",
     "method-override": "^2.3.5",
-    "morgan": "1.7.0"
+    "monkeylearn": "^0.1.10",
+    "morgan": "1.7.0",
+    "passport-twitter": "^1.0.4",
+    "socket.io": "^1.4.6",
+    "socket.io-client": "^1.4.6"
   },
   "devDependencies": {
     "babel-cli": "6.16.0",

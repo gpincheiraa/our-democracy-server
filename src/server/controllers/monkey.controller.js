@@ -1,21 +1,31 @@
 import httpStatus from 'http-status';
 import APIError from '../helpers/APIError';
+import MonkeyLearn from 'monkeylearn'
 
 const config = require('../../config/env');
 
 function get(req, res, next) {
   if (req.body.search) {
-    return res.json({
-      list: req.body.search,
-      status: {
-        'message': 'OK',
-        'code' : httpStatus.OK
-      }
+    var ml = new MonkeyLearn('dd137db1d75032bb63044096b8f9cb6e81296030');
+    var module_id = 'cl_u9PRHNzf';
+    var text_list = ["hola como estas", "maldito hijo de perra", "que mujer mas guapa"];
+    var p = ml.classifiers.classify(module_id, text_list, true);
+
+    p.then(function (_res) {
+      console.log(_res.result);
+      return res.json({
+        list: _res.result,
+        status: {
+          'message': 'OK',
+          'code' : httpStatus.OK
+        }
+      });
+
     });
+
+
   }
 
-  const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED);
-  return next(err);
 }
 
 export default { get };
