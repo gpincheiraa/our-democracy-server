@@ -10,18 +10,15 @@ function get(req, res, next) {
     let text_list = ["hola como estas", "maldito hijo de perra", "que mujer mas guapa"];
     let p = ml.classifiers.classify(config.auth.monkeyLearn.MODULE_ID, text_list, true);
 
-    p
-      .then( (_res) => {
-        console.log(_res.result);
-        return res.json({
-          list: _res.result,
-          status: {
-            'message': 'OK',
-            'code' : httpStatus.OK
-          }
-        });
-
+    p.then( (_res) => {
+      return res.json({
+        list: _res.result,
+        status: {
+          'message': 'OK',
+          'code' : httpStatus.OK
+        }
       });
+    });
 
 
   }
