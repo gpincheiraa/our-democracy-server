@@ -1,50 +1,65 @@
-'use strict';
-
 import gulp from 'gulp';
-import webpackStream  from 'webpack-stream';
-import nodemon from 'gulp-nodemon';
-import babel from 'gulp-babel';
+import gulpLoadPlugins from 'gulp-load-plugins';
+import path from 'path';
+import del from 'del';
+import runSequence from 'run-sequence';
 
-gulp.task('build', ['build-client', 'build-server']);
+const plugins = gulpLoadPlugins();
 
-gulp.task('build-client', ['copy-assets', 'build-shared'], () =>
-    gulp.src('src/client/js/client.js')
-        .pipe(webpackStream(require('./webpack.config.js')))
-        .pipe(gulp.dest('dist/client/js'))
+const paths = {
+  js: [
+    './src/**/*.js',
+    '!dist/**',
+    '!node_modules/**'
+  ],
+  nonJs: [
+    './package.json',
+    './.gitignore'
+  ],
+  tests: './server/tests/*.js'
+};
+
+// Clean up dist and coverage directory
+gulp.task('clean', () =>
+  del(['dist/**', '!dist'])
 );
 
-gulp.task('copy-assets', () =>
-    gulp.src(['src/client/**/*.*', '!src/client/js/**/*.*'])
-    .pipe(gulp.dest('dist/client/'))
+// Compile ES6 to ES5 and copy to dist
+gulp.task('babel', () =>
+  gulp.src([...paths.js, '!gulpfile.babel.js'], { base: './src' })
+    .pipe(plugins.newer('dist'))
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.babel())
+    .pipe(plugins.sourcemaps.write('.', {
+      includeContent: false,
+      sourceRoot(file) {
+        return path.relative(file.path, __dirname);
+      }
+    }))
+    .pipe(gulp.dest('dist'))
 );
 
-gulp.task('build-server', ['build-shared'], () =>
-    gulp.src(['src/server/**/*.*'])
-    .pipe(babel())
-    .pipe(gulp.dest('dist/server/'))
+// Start server with restart on file changes
+gulp.task('nodemon', ['babel'], () =>
+  plugins.nodemon({
+    script: './dist/server/index.js',
+    ext: 'js',
+    ignore: ['node_modules/**/*.js', 'dist/**/*.js'],
+    tasks: ['babel']
+  })
 );
 
-gulp.task('build-shared', () =>
-    gulp.src(['src/shared/**/*.*'])
-        .pipe(babel())
-        .pipe(gulp.dest('dist/shared/'))
-);
+// gulp serve for development
+gulp.task('serve', ['clean'], () => runSequence('nodemon'));
 
-gulp.task('watch', ['build'], () => {
-    gulp.watch(['src/client/**/*.*'], ['build-client']);
-    gulp.watch(['src/server/**/*.*'], ['build-server']);
-    gulp.watch(['src/shared/**/*.*'], ['build-server', 'build-client']);
-    gulp.start('run');
+gulp.task('watch', () => {
+    gulp.watch(['src/server/**/*.*'], ['babel']);
+    gulp.start('serve');
 });
 
-gulp.task('run', () => {
-    nodemon({
-        delay: 10,
-        script: 'dist/server/server.js',
-        // args: ["config.json"],
-        ext: 'js',
-        watch: 'src'
-    })
+// default task: clean dist, compile js files and copy non-js files.
+gulp.task('default', ['clean'], () => {
+  runSequence(
+    ['copy', 'babel']
+  );
 });
-
-gulp.task('default', ['build', 'run']);
