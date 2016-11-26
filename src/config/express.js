@@ -7,6 +7,7 @@ import methodOverride from 'method-override';
 import cors from 'cors';
 import httpStatus from 'http-status';
 import expressValidation from 'express-validation';
+import session from 'express-session';
 import helmet from 'helmet';
 import routes from '../server/routes/index.route';
 import config from './env';
@@ -21,12 +22,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compress());
 app.use(methodOverride());
+app.use(session({
+  secret: "dev-wise-noders-evenloop16",
+  resave: false,
+  saveUninitialized: true
+}));
 
 // secure apps by setting various HTTP headers
 app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
+
+// catch sessions
+app.use((req, res, next) => {
+  res.locals.session = req.session;
+  next();
+});
 
 // mount all routes on /api path
 app.use('/api', routes);

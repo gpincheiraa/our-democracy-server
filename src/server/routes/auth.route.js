@@ -7,7 +7,6 @@ import config from '../../config/env';
 const router = express.Router(); // eslint-disable-line new-cap
 
 /** POST /api/auth/token - Returns token if authentication success */
-router.route('/token')
-  .post(validate(paramValidation.login), authCtrl.login);
+router.route('/token').get(authCtrl.getToken);
 
 export default router;
