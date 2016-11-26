@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import APIError from '../helpers/APIError';
 import Twitter from 'twitter'
+import monkey from './monkey.controller'
 
 const config = require('../../config/env');
 
@@ -14,7 +15,11 @@ let search = (req, res, next) => {
       access_token_secret: req.session.oauthRequestTokenSecret || ''
     });
 
-    client.get('search/tweets', { q: req.params.q }, (error, tweets, response) => {
+    client.get('search/tweets', {
+      q: req.params.q,
+      lang: 'es',
+      result_type: 'popular'
+    }, (error, tweets, response) => {
       processTweets(tweets, res);
     });
   }
@@ -22,19 +27,11 @@ let search = (req, res, next) => {
 
 let processTweets = (tweets, response) => {
   if(tweets) {
-    let tweetTexts = [];
+    let tweetsArray = [];
     tweets.statuses.forEach( (tweet) => {
-      tweetTexts.push(tweet.text);
+      tweetsArray.push(tweet.text);
     });
-
-    return response.json({
-      search_string: '',
-      data: tweetTexts,
-      status: {
-        'message': 'OK',
-        'code' : httpStatus.OK
-      }
-    });
+    return monkey.DO(tweetsArray, tweets.search_metadata.query);
   }
 };
 

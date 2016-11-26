@@ -4,14 +4,19 @@ import MonkeyLearn from 'monkeylearn';
 
 const config = require('../../config/env');
 
-function get(req, res, next) {
-  if (req.body.search) {
+let DO = (searchArray, searchQuery) => {
+  if (searchArray) {
     let ml = new MonkeyLearn(config.auth.monkeyLearn.TOKEN);
-    let text_list = ["hola como estas", "maldito hijo de perra", "que mujer mas guapa"];
-    let p = ml.classifiers.classify(config.auth.monkeyLearn.MODULE_ID, text_list, true);
+    let p = ml.classifiers.classify(config.auth.monkeyLearn.MODULE_ID, searchArray, true);
+
+    console.log(`Searching ${searchQuery} by ${searchArray.length} tweets`);
+    searchArray.forEach( (tweet) => {
+      console.log(tweet);
+    });
 
     p.then( (_res) => {
       return res.json({
+        search: searchQuery,
         list: _res.result,
         status: {
           'message': 'OK',
@@ -19,10 +24,7 @@ function get(req, res, next) {
         }
       });
     });
-
-
   }
+};
 
-}
-
-export default { get };
+export default { DO };

@@ -6,12 +6,5 @@ export default {
     body: {
       username: Joi.string().required(),
     }
-  },
-
-  // POST /api/monkey
-  monkey: {
-    body: {
-      search: Joi.string().required()
-    }
   }
 };
