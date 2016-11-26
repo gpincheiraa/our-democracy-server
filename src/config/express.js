@@ -22,11 +22,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compress());
 app.use(methodOverride());
-app.use(session({
-  secret: "dev-wise-noders-evenloop16",
-  resave: false,
-  saveUninitialized: true
-}));
+
+if(config.env === 'development') {
+  app.use(session({
+    secret: "dev-wise-noders-evenloop16",
+    resave: false,
+    saveUninitialized: true
+  }));
+}
 
 // secure apps by setting various HTTP headers
 app.use(helmet());

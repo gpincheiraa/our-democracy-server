@@ -60,6 +60,6 @@ gulp.task('watch', () => {
 // default task: clean dist, compile js files and copy non-js files.
 gulp.task('default', ['clean'], () => {
   runSequence(
-    ['copy', 'babel']
+    ['babel']
   );
 });
