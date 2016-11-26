@@ -15,25 +15,33 @@ let search = (req, res, next) => {
       access_token_secret: req.session.oauthRequestTokenSecret || ''
     });
 
-    let response = res;
-
     client.get('search/tweets', {
       q: req.params.q,
       lang: 'es',
       result_type: 'popular'
     }, (error, tweets, response) => {
-      return processTweets(tweets, res);
+      return processTweets(tweets, res, (req.query.analize));
     });
   }
 };
 
-let processTweets = (tweets, response) => {
+let processTweets = (tweets, response, analize) => {
   if(tweets) {
     let tweetsArray = [];
     tweets.statuses.forEach( (tweet) => {
       tweetsArray.push(tweet.text);
     });
-    return monkey.DO(tweetsArray, tweets.search_metadata.query, response);
+    if(analize) {
+      return monkey.DO(tweetsArray, tweets.search_metadata.query, response);
+    } else {
+      return response.json({
+        data: tweetsArray.slice(0, 1),
+        status: {
+          message: 'OK',
+          code: httpStatus.OK
+        }
+      });
+    }
   }
 };
 
