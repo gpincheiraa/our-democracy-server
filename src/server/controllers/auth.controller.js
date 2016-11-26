@@ -9,7 +9,7 @@ const consumer = new oauth.OAuth(
     config.auth.twitter.CONSUMER_KEY,
     config.auth.twitter.CONSUMER_SECRET,
     "1.0A",
-    `http://127.0.0.1:${config.port}/api/auth/callback`,
+    `http://127.0.0.1:${config.port}/api/auth/token`,
     "HMAC-SHA1"
 );
 
@@ -19,7 +19,6 @@ let getToken = (req, res, next) => {
       const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED);
       return next(err);
     } else {
-      console.log(results);
       req.session.oauthRequestToken = oauthToken;
       req.session.oauthRequestTokenSecret = oauthTokenSecret;
       return res.json({

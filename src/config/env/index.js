@@ -10,6 +10,10 @@ const defaults = {
       CONSUMER_KEY : 'bO4vqoJpmtxN6um768i6rtCyp',
       CONSUMER_SECRET: 'AZyIk8vtllzjFa9FSKjVBK5UkoNP6grt396HlOBipzF4Tfvmxh',
       CALLBACK : '/auth/login'
+    },
+    monkeyLearn: {
+      TOKEN : 'dd137db1d75032bb63044096b8f9cb6e81296030',
+      MODULE_ID : 'cl_u9PRHNzf'
     }
   }
 };
