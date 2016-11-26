@@ -1,23 +1,19 @@
 import httpStatus from 'http-status';
-import APIError from '../helpers/APIError';
 import MonkeyLearn from 'monkeylearn';
 
 const config = require('../../config/env');
 
-let DO = (searchArray, searchQuery) => {
+let DO = (searchArray, searchQuery, response) => {
   if (searchArray) {
     let ml = new MonkeyLearn(config.auth.monkeyLearn.TOKEN);
     let p = ml.classifiers.classify(config.auth.monkeyLearn.MODULE_ID, searchArray, true);
 
     console.log(`Searching ${searchQuery} by ${searchArray.length} tweets`);
-    searchArray.forEach( (tweet) => {
-      console.log(tweet);
-    });
 
     p.then( (_res) => {
-      return res.json({
+      return response.json({
         search: searchQuery,
-        list: _res.result,
+        data: _res.result,
         status: {
           'message': 'OK',
           'code' : httpStatus.OK

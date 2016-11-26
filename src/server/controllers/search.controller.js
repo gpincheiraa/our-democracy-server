@@ -15,12 +15,14 @@ let search = (req, res, next) => {
       access_token_secret: req.session.oauthRequestTokenSecret || ''
     });
 
+    let response = res;
+
     client.get('search/tweets', {
       q: req.params.q,
       lang: 'es',
       result_type: 'popular'
     }, (error, tweets, response) => {
-      processTweets(tweets, res);
+      return processTweets(tweets, res);
     });
   }
 };
@@ -31,7 +33,7 @@ let processTweets = (tweets, response) => {
     tweets.statuses.forEach( (tweet) => {
       tweetsArray.push(tweet.text);
     });
-    return monkey.DO(tweetsArray, tweets.search_metadata.query);
+    return monkey.DO(tweetsArray, tweets.search_metadata.query, response);
   }
 };
 

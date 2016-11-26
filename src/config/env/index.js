@@ -12,7 +12,7 @@ const defaults = {
       CALLBACK : '/auth/login'
     },
     monkeyLearn: {
-      TOKEN : 'dd137db1d75032bb63044096b8f9cb6e81296030',
+      TOKEN : '7dab97263e34812fd0b317e32c8fb2f0196448ba',
       MODULE_ID : 'cl_u9PRHNzf'
     }
   }
