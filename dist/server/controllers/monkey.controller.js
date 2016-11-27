@@ -16,13 +16,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var config = require('../../config/env');
 
-var DO = function DO(searchArray, searchQuery, response) {
+var DO = function DO(searchArray, searchQuery, lang, response) {
   if (searchArray) {
+    console.log('Send ' + searchArray.length + ' tweets to classify by MonkeyLearn.');
+
     var ml = new _monkeylearn2.default(config.auth.monkeyLearn.TOKEN);
-    var p = ml.classifiers.classify(config.auth.monkeyLearn.MODULE_ID, searchArray, true);
+    var p = ml.classifiers.classify(config.auth.monkeyLearn.MODULE_ID[lang], searchArray, true);
 
     p.then(function (_res) {
       var responseData = processAnalize(_res.result);
+      console.log('MonkeyLearn dice...');
+      console.log('Tenemos datos... ', responseData);
       return response.json({
         search: searchQuery,
         count: _res.result.length,

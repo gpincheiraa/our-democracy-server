@@ -56,6 +56,7 @@ app.use((req, res, next) => {
 
 // mount all routes on /api path
 app.use('/api', routes);
+app.use('/', express.static('./dist/client'));
 
 // if error is not an instanceOf APIError, convert it.
 app.use((err, req, res, next) => {

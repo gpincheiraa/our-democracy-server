@@ -24,6 +24,7 @@ var consumer = new _oauth2.default.OAuth("https://twitter.com/oauth/request_toke
 var getToken = function getToken(req, res, next) {
   consumer.getOAuthRequestToken(function (error, oauthToken, oauthTokenSecret, results) {
     if (error) {
+      console.log(error);
       var err = new _APIError2.default('Authentication error', _httpStatus2.default.UNAUTHORIZED);
       return next(err);
     } else {

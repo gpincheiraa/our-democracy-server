@@ -36,6 +36,10 @@ var _httpStatus = require('http-status');
 
 var _httpStatus2 = _interopRequireDefault(_httpStatus);
 
+var _expressWinston = require('express-winston');
+
+var _expressWinston2 = _interopRequireDefault(_expressWinston);
+
 var _expressValidation = require('express-validation');
 
 var _expressValidation2 = _interopRequireDefault(_expressValidation);
@@ -60,6 +64,10 @@ var _APIError = require('../server/helpers/APIError');
 
 var _APIError2 = _interopRequireDefault(_APIError);
 
+var _winston = require('./winston');
+
+var _winston2 = _interopRequireDefault(_winston);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
@@ -83,6 +91,18 @@ app.use((0, _helmet2.default)());
 // enable CORS - Cross Origin Resource Sharing
 app.use((0, _cors2.default)());
 
+// enable detailed API logging in dev env
+if (_env2.default.env === 'development') {
+  _expressWinston2.default.requestWhitelist.push('body');
+  _expressWinston2.default.responseWhitelist.push('body');
+  app.use(_expressWinston2.default.logger({
+    winstonInstance: _winston2.default,
+    meta: true, // optional: log meta data about request (defaults to true)
+    msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
+    colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
+  }));
+}
+
 // catch sessions
 app.use(function (req, res, next) {
   res.locals.session = req.session;
@@ -91,6 +111,7 @@ app.use(function (req, res, next) {
 
 // mount all routes on /api path
 app.use('/api', _index2.default);
+app.use('/', _express2.default.static('./dist/client'));
 
 // if error is not an instanceOf APIError, convert it.
 app.use(function (err, req, res, next) {
@@ -107,6 +128,13 @@ app.use(function (err, req, res, next) {
   }
   return next(err);
 });
+
+// log error in winston transports except when executing test suite
+if (_env2.default.env !== 'test') {
+  app.use(_expressWinston2.default.errorLogger({
+    winstonInstance: _winston2.default
+  }));
+}
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
