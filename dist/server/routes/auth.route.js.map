@@ -1,0 +1,1 @@
+{"version":3,"sources":["server/routes/auth.route.js"],"names":["router","Router","route","get","getToken"],"mappings":";;;;;;AAAA;;;;AACA;;;;AACA;;;;AACA;;;;AACA;;;;;;AAEA,IAAMA,SAAS,kBAAQC,MAAR,EAAf,C,CAAiC;;AAEjC;AACAD,OAAOE,KAAP,CAAa,QAAb,EAAuBC,GAAvB,CAA2B,eAASC,QAApC;;kBAEeJ,M","file":"auth.route.js","sourceRoot":"../../../../../.."}

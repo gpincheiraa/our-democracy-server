@@ -1,0 +1,1 @@
+{"version":3,"sources":["server/routes/search.route.js"],"names":["router","Router","route","get","search"],"mappings":";;;;;;AAAA;;;;AACA;;;;AACA;;;;;;AAEA,IAAMA,SAAS,kBAAQC,MAAR,EAAf,C,CAAiC;;AAEjC;AACAD,OAAOE,KAAP,CAAa,KAAb,EAAoBC,GAApB,CAAwB,iBAAWC,MAAnC;;kBAEeJ,M","file":"search.route.js","sourceRoot":"../../../../../.."}

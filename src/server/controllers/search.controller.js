@@ -6,6 +6,7 @@ import monkey from './monkey.controller'
 const config = require('../../config/env');
 
 let search = (req, res, next) => {
+  
   if (req.params.q) {
 
     const client = new Twitter({
