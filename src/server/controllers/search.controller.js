@@ -32,6 +32,7 @@ let processTweets = (tweets, response, analize) => {
       tweetsArray.push(tweet.text);
     });
     if(analize) {
+      console.log("asd");
       return monkey.DO(tweetsArray, tweets.search_metadata.query, response);
     } else {
       return response.json({
@@ -44,5 +45,6 @@ let processTweets = (tweets, response, analize) => {
     }
   }
 };
+
 
 export default { search };

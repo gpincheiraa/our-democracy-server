@@ -13,7 +13,7 @@ let DO = (searchArray, searchQuery, response) => {
     p.then( (_res) => {
       return response.json({
         search: searchQuery,
-        data: _res.result,
+        data: processAnalize(_res.result),
         status: {
           'message': 'OK',
           'code' : httpStatus.OK
@@ -23,4 +23,22 @@ let DO = (searchArray, searchQuery, response) => {
   }
 };
 
+function processAnalize(analize){
+  let obj = {};
+  let Negative = analize.data[0].map((aux) =>{
+     return aux.label === 'Negative'
+  }).lenght;
+  let Neutral = analize.data[0].map((aux) =>{
+     return aux.label === 'Neutral'
+  }).lenght;
+  let Positive = analize.data[0].map((aux) =>{
+     return aux.label === 'Positive'
+  }).lenght;
+
+  obj.negative = Negative;
+  obj.Positive = Positive;
+  obj.Neutral = Neutral;
+  obj.Total = Positive + Neutral + Negative;
+  return Obj;
+}
 export default { DO };
