@@ -1,0 +1,1 @@
+{"version":3,"sources":["server/index.js"],"names":["listen","port","console","log","env"],"mappings":";;;;;;AAAA;;;;AACA;;;;;;AAEA,kBAAIA,MAAJ,CAAW,gBAAOC,IAAlB,EAAwB,YAAM;AAC5BC,UAAQC,GAAR,6BAAsC,gBAAOF,IAA7C,UAAsD,gBAAOG,GAA7D;AACD,CAFD","file":"index.js","sourceRoot":"../../../.."}
