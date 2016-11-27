@@ -9,6 +9,7 @@ const plugins = gulpLoadPlugins();
 const paths = {
   js: [
     './src/**/*.js',
+    '!src/client/**/*.*',
     '!dist/**',
     '!node_modules/**'
   ],
@@ -40,13 +41,19 @@ gulp.task('babel', () =>
 );
 
 // Start server with restart on file changes
-gulp.task('nodemon', ['babel'], () =>
+gulp.task('nodemon', ['babel', 'copy-client'], () =>
   plugins.nodemon({
     script: './dist/server/index.js',
     ext: 'js',
     ignore: ['node_modules/**/*.js', 'dist/**/*.js'],
-    tasks: ['babel']
+    tasks: ['babel', 'copy-client']
   })
+);
+
+// Copy client
+gulp.task('copy-client', () =>
+  gulp.src(['src/client/**/*.*'])
+  .pipe(gulp.dest('dist/client/'))
 );
 
 // gulp serve for development
