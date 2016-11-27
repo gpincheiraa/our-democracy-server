@@ -25,3 +25,4 @@ Una API para solicitar tweets y analizarlos vía MonkeyLearn.
     type    : recent (default: popular)
     count   : 100 (default: 15)
     analize : true (default: false)
+    lang    : en (default: es)
