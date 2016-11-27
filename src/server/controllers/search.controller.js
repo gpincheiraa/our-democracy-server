@@ -22,6 +22,7 @@ let search = (req, res, next) => {
       count: (req.query.count ? req.query.count : 100) // max: 100
     }, (error, tweets, response) => {
       if(error) {
+        console.log(error);
         const err = new APIError('Tweets API error', httpStatus.INTERNAL_SERVER_ERROR);
         return next(err);
       } else {

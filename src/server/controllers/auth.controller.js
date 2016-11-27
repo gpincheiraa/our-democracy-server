@@ -16,6 +16,7 @@ const consumer = new oauth.OAuth(
 let getToken = (req, res, next) => {
   consumer.getOAuthRequestToken( (error, oauthToken, oauthTokenSecret, results) => {
     if(error) {
+      console.log(error);
       const err = new APIError('Authentication error', httpStatus.UNAUTHORIZED);
       return next(err);
     } else {
