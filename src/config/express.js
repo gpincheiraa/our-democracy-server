@@ -6,12 +6,14 @@ import compress from 'compression';
 import methodOverride from 'method-override';
 import cors from 'cors';
 import httpStatus from 'http-status';
+import expressWinston from 'express-winston';
 import expressValidation from 'express-validation';
 import session from 'express-session';
 import helmet from 'helmet';
 import routes from '../server/routes/index.route';
 import config from './env';
 import APIError from '../server/helpers/APIError';
+import winstonInstance from './winston';
 
 const app = express();
 
@@ -33,6 +35,18 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
+
+// enable detailed API logging in dev env
+if (config.env === 'development') {
+  expressWinston.requestWhitelist.push('body');
+  expressWinston.responseWhitelist.push('body');
+  app.use(expressWinston.logger({
+    winstonInstance,
+    meta: true, // optional: log meta data about request (defaults to true)
+    msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
+    colorStatus: true // Color the status code (default green, 3XX cyan, 4XX yellow, 5XX red).
+  }));
+}
 
 // catch sessions
 app.use((req, res, next) => {
@@ -56,6 +70,13 @@ app.use((err, req, res, next) => {
   }
   return next(err);
 });
+
+// log error in winston transports except when executing test suite
+if (config.env !== 'test') {
+  app.use(expressWinston.errorLogger({
+    winstonInstance
+  }));
+}
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
