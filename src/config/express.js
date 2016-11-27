@@ -22,14 +22,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compress());
 app.use(methodOverride());
-
-if(config.env === 'development') {
-  app.use(session({
-    secret: "dev-wise-noders-evenloop16",
-    resave: false,
-    saveUninitialized: true
-  }));
-}
+app.use(session({
+  secret: "dev-wise-noders-evenloop16",
+  resave: false,
+  saveUninitialized: true
+}));
 
 // secure apps by setting various HTTP headers
 app.use(helmet());
@@ -70,7 +67,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => // eslint-disable-line no-unused-vars
   res.status(err.status).json({
     message: err.isPublic ? err.message : httpStatus[err.status],
-    stack: config.env === 'development' ? err.stack : {}
+    stack: config.env === 'development' ? err.stack : err.stack
   })
 );
 

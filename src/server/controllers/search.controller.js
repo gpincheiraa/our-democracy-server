@@ -18,14 +18,20 @@ let search = (req, res, next) => {
     client.get('search/tweets', {
       q: req.params.q,
       lang: 'es',
-      result_type: 'popular'
+      result_type: (req.query.type ? req.query.type : 'popular'), // maybe: "recent" or default "popular"
+      count: (req.query.count ? req.query.count : 100) // max: 100
     }, (error, tweets, response) => {
-      return processTweets(tweets, res, (req.query.analize));
+      if(error) {
+        const err = new APIError('Tweets API error', httpStatus.INTERNAL_SERVER_ERROR);
+        return next(err);
+      } else {
+        return processTweets(tweets, res, (req.query.analize), next);
+      }
     });
   }
 };
 
-let processTweets = (tweets, response, analize) => {
+let processTweets = (tweets, response, analize, next) => {
   if(tweets) {
     let tweetsArray = [];
     tweets.statuses.forEach( (tweet) => {
@@ -42,6 +48,9 @@ let processTweets = (tweets, response, analize) => {
         }
       });
     }
+  } else {
+    const err = new APIError('No Tweets.', httpStatus.INTERNAL_SERVER_ERROR);
+    return next(err);
   }
 };
 
