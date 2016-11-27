@@ -8,13 +8,8 @@ let DO = (searchArray, searchQuery, response) => {
     let ml = new MonkeyLearn(config.auth.monkeyLearn.TOKEN);
     let p = ml.classifiers.classify(config.auth.monkeyLearn.MODULE_ID, searchArray, true);
 
-    console.log(`Searching ${searchQuery} by ${searchArray.length} tweets`);
-
     p.then( (_res) => {
-      console.log("llegue");
-      console.log(_res.result);
       let responseData = processAnalize(_res.result);
-      console.log (responseData);
       return response.json({
         search: searchQuery,
         count: _res.result.length,
@@ -43,9 +38,9 @@ function processAnalize(analize){
   }).length;
 
   obj.negative = Negative;
-  obj.Positive = Positive;
-  obj.Neutral = Neutral;
-  obj.Total = Positive + Neutral + Negative;
+  obj.positive = Positive;
+  obj.neutral = Neutral;
+  obj.total = Positive + Neutral + Negative;
   return obj;
 }
 export default { DO };
