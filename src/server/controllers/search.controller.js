@@ -38,7 +38,7 @@ let processTweets = (tweets, response, analize, next) => {
       tweetsArray.push(tweet.text);
     });
     if(analize) {
-      console.log("asd");
+      console.log("qwe");
       return monkey.DO(tweetsArray, tweets.search_metadata.query, response);
     } else {
       return response.json({

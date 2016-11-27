@@ -11,7 +11,10 @@ let DO = (searchArray, searchQuery, response) => {
     console.log(`Searching ${searchQuery} by ${searchArray.length} tweets`);
 
     p.then( (_res) => {
+      console.log("llegue");
+      console.log(_res.result);
       let responseData = processAnalize(_res.result);
+      console.log (responseData);
       return response.json({
         search: searchQuery,
         count: _res.result.length,
@@ -27,20 +30,22 @@ let DO = (searchArray, searchQuery, response) => {
 
 function processAnalize(analize){
   let obj = {};
-  let Negative = analize.data[0].map((aux) =>{
-     return aux.label === 'Negative'
-  }).lenght;
-  let Neutral = analize.data[0].map((aux) =>{
-     return aux.label === 'Neutral'
-  }).lenght;
-  let Positive = analize.data[0].map((aux) =>{
-     return aux.label === 'Positive'
-  }).lenght;
+ 
+  let Negative = analize.filter((aux) =>{
+     return aux[0].label === 'Negative'
+  }).length;
+
+  let Neutral = analize.filter((aux) =>{
+     return aux[0].label === 'Neutral'
+  }).length;
+  let Positive = analize.filter((aux) =>{
+     return aux[0].label === 'Positive'
+  }).length;
 
   obj.negative = Negative;
   obj.Positive = Positive;
   obj.Neutral = Neutral;
   obj.Total = Positive + Neutral + Negative;
-  return Obj;
+  return obj;
 }
 export default { DO };
