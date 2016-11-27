@@ -5,6 +5,8 @@ const config = require('../../config/env');
 
 let DO = (searchArray, searchQuery, response) => {
   if (searchArray) {
+    console.log(`Send ${searchArray.length} tweets to classify by MonkeyLearn.`);
+
     let ml = new MonkeyLearn(config.auth.monkeyLearn.TOKEN);
     let p = ml.classifiers.classify(config.auth.monkeyLearn.MODULE_ID, searchArray, true);
 
@@ -25,7 +27,7 @@ let DO = (searchArray, searchQuery, response) => {
 
 function processAnalize(analize){
   let obj = {};
- 
+
   let Negative = analize.filter((aux) =>{
      return aux[0].label === 'Negative'
   }).length;
