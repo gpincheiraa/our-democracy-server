@@ -11,9 +11,11 @@ let DO = (searchArray, searchQuery, response) => {
     console.log(`Searching ${searchQuery} by ${searchArray.length} tweets`);
 
     p.then( (_res) => {
+      let responseData = processAnalize(_res.result);
       return response.json({
         search: searchQuery,
-        data: processAnalize(_res.result),
+        count: _res.result.length,
+        data: responseData,
         status: {
           'message': 'OK',
           'code' : httpStatus.OK
