@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "description": "",
   "main": "./src/server/index.js",
+  "engines": {
+    "node": "6.9.x",
+    "npm": "3.10.x"
+  },
   "scripts": {
-    "start": "gulp && NODE_ENV=production node ./dist/server/index.js",
+    "start": "NODE_ENV=production node ../dist/server/index.js",
     "test": "NODE_ENV=test babel-node node_modules/.bin/isparta cover _mocha -- --ui bdd --reporter spec --colors --compilers js:babel-core/register ./src/server/tests/*.test.js",
     "test:watch": "npm run test -- --watch"
   },
