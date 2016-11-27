@@ -13,7 +13,10 @@ const defaults = {
     },
     monkeyLearn: {
       TOKEN : '7dab97263e34812fd0b317e32c8fb2f0196448ba',
-      MODULE_ID : 'cl_u9PRHNzf'
+      MODULE_ID : {
+        es: 'cl_u9PRHNzf',
+        en: 'cl_qkjxv9Ly'
+      }
     }
   }
 };
