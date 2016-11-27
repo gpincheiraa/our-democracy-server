@@ -8,8 +8,6 @@ let DO = (searchArray, searchQuery, response) => {
     let ml = new MonkeyLearn(config.auth.monkeyLearn.TOKEN);
     let p = ml.classifiers.classify(config.auth.monkeyLearn.MODULE_ID, searchArray, true);
 
-    console.log(`Searching ${searchQuery} by ${searchArray.length} tweets`);
-
     p.then( (_res) => {
       let responseData = processAnalize(_res.result);
       return response.json({
@@ -27,20 +25,22 @@ let DO = (searchArray, searchQuery, response) => {
 
 function processAnalize(analize){
   let obj = {};
-  let Negative = analize.data[0].map((aux) =>{
-     return aux.label === 'Negative'
-  }).lenght;
-  let Neutral = analize.data[0].map((aux) =>{
-     return aux.label === 'Neutral'
-  }).lenght;
-  let Positive = analize.data[0].map((aux) =>{
-     return aux.label === 'Positive'
-  }).lenght;
+ 
+  let Negative = analize.filter((aux) =>{
+     return aux[0].label === 'Negative'
+  }).length;
+
+  let Neutral = analize.filter((aux) =>{
+     return aux[0].label === 'Neutral'
+  }).length;
+  let Positive = analize.filter((aux) =>{
+     return aux[0].label === 'Positive'
+  }).length;
 
   obj.negative = Negative;
-  obj.Positive = Positive;
-  obj.Neutral = Neutral;
-  obj.Total = Positive + Neutral + Negative;
-  return Obj;
+  obj.positive = Positive;
+  obj.neutral = Neutral;
+  obj.total = Positive + Neutral + Negative;
+  return obj;
 }
 export default { DO };
