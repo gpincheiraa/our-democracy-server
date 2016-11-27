@@ -1,4 +1,4 @@
-FROM node:6-slim
+FROM node:6-wheezy
 
 VOLUME ["/usr/local/bin/docker"]
 
